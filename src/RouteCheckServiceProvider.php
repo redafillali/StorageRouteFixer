@@ -2,48 +2,43 @@
 
 namespace Redaelfillali\StorageRouteFixer;
 
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class RouteCheckServiceProvider extends ServiceProvider
 {
-    public function boot()
-    {
-        // Chemin du fichier storage.php dans le répertoire des routes
-        $storageRoutePath = base_path('routes/storage.php');
-
-        // Code de la route pour le fichier storage.php
-        $routeContent = <<<'EOT'
-<?php
-
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\File;
-
-Route::get('/storage/{any}', function ($any) {
-    $path = storage_path('app/public/' . $any);
-
-    if (!File::exists($path)) {
-        abort(404);
-    }
-
-    $file = File::get($path);
-    $type = File::mimeType($path);
-
-    return response($file, 200)->header("Content-Type", $type);
-})->where('any', '.*');
-EOT;
-
-        // Créez le fichier storage.php s'il n'existe pas
-        if (!File::exists($storageRoutePath)) {
-            File::put($storageRoutePath, $routeContent);
-        }
-
-        // Charger le fichier storage.php avec web.php
-        $this->loadRoutesFrom($storageRoutePath);
-    }
-
+    /**
+     * Enregistrer le fournisseur de services.
+     *
+     * @return void
+     */
     public function register()
     {
-        //
+        // Enregistrement d'autres services ou configurations, si nécessaire.
+    }
+
+    /**
+     * Démarrer les services, y compris le chargement des routes.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadRoutesInOrder();
+    }
+
+    /**
+     * Charger le fichier storage.php avant web.php pour établir la priorité des routes.
+     *
+     * @return void
+     */
+    protected function loadRoutesInOrder()
+    {
+        // Charger storage.php depuis le package avant web.php
+        Route::middleware('web')
+            ->group(__DIR__ . '/routes/storage.php');
+
+        // Charger ensuite web.php
+        $this->loadRoutesFrom(base_path('routes/web.php'));
     }
 }
