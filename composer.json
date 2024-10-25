@@ -1,0 +1,24 @@
+{
+  "name": "redaelfillali/storage-route-fixer",
+  "description": "Automatically adds a storage route to serve files from storage if missing.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Reda El Fillali",
+      "email": "reda.elfillali@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Redaelfillali\\StorageRouteFixer\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Redaelfillali\\StorageRouteFixer\\RouteCheckServiceProvider"
+      ]
+    }
+  }
+}
