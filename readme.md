@@ -62,7 +62,7 @@ Les contributions sont les bienvenues ! Veuillez suivre ces étapes :
 
 ## Auteurs
 
-- **Reda El Fillali** - [redaelfillali](https://github.com/redaelfillali)
+- **Reda El Fillali** - [redafillali](https://github.com/redafillali)
 
 ## Licence
 
